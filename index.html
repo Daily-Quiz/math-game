@@ -2,103 +2,159 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Tala – Math Quiz</title>
+  <title>Tala’s Math Game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <style>
-    body{
-      font-family:"Segoe UI",Arial,sans-serif;
-      background:#f3f6fb;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      min-height:100vh;
-      margin:0;
-      padding:16px;
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f3f6fb;
+      margin: 0;
+      padding: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
     }
-    .card{
-      background:#fff;
-      padding:28px;
-      max-width:760px;
-      width:100%;
-      border-radius:12px;
-      box-shadow:0 6px 18px rgba(0,0,0,.15);
-      text-align:center;
+
+    .card {
+      background: #fff;
+      padding: 28px;
+      max-width: 720px;
+      width: 100%;
+      border-radius: 14px;
+      box-shadow: 0 8px 22px rgba(0,0,0,.15);
+      text-align: center;
+      position: relative;
+      z-index: 1;
     }
-    h1{color:#002f6c;margin:0 0 10px;}
-    .stats{
-      display:flex;
-      gap:12px;
-      justify-content:center;
-      flex-wrap:wrap;
-      color:#444;
-      margin:10px 0 18px;
-      font-weight:600;
+
+    h1 {
+      color: #002f6c;
+      margin-top: 0;
     }
-    .pill{
-      background:#f0f4ff;
-      border:1px solid #d7e2ff;
-      border-radius:999px;
-      padding:8px 12px;
-      font-size:0.95em;
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      font-weight: 600;
+      color: #444;
     }
-    .question{
-      font-size:1.8em;
-      line-height:1.4;
-      margin:10px 0 16px;
-      font-weight:700;
-      color:#111;
+
+    .pill {
+      background: #f0f4ff;
+      border-radius: 999px;
+      padding: 8px 14px;
+      border: 1px solid #d7e2ff;
     }
-    .row{
-      display:flex;
-      gap:10px;
-      justify-content:center;
-      flex-wrap:wrap;
-      margin:10px 0;
+
+    .question {
+      font-size: 2rem;
+      font-weight: 800;
+      margin: 16px 0;
     }
-    input{
-      font-size:1.1em;
-      padding:12px 14px;
-      border-radius:8px;
-      border:1px solid #cdd7f1;
-      min-width:220px;
-      outline:none;
+
+    .row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
     }
-    button{
-      background:#002f6c;
-      color:#fff;
-      border:none;
-      padding:12px 18px;
-      font-size:1em;
-      border-radius:8px;
-      cursor:pointer;
-      font-weight:650;
+
+    input {
+      font-size: 1.2rem;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #cdd7f1;
+      width: 220px;
+      text-align: center;
     }
-    button:hover{background:#004a9f;}
-    button.secondary{
-      background:#e9eefc;
-      color:#002f6c;
-      border:1px solid #cdd7f1;
+
+    button {
+      background: #002f6c;
+      color: #fff;
+      border: none;
+      padding: 12px 18px;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
     }
-    button.secondary:hover{background:#dfe7ff;}
-    .feedback{
-      margin-top:12px;
-      min-height:26px;
-      font-size:1.05em;
-      font-weight:650;
+
+    button.secondary {
+      background: #e9eefc;
+      color: #002f6c;
+      border: 1px solid #cdd7f1;
     }
-    .good{color:#0f766e;}
-    .bad{color:#be123c;}
-    .footer{
-      margin-top:18px;
-      font-size:.95em;
-      color:#666;
+
+    .feedback {
+      margin-top: 14px;
+      min-height: 26px;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .good { color: #0f766e; }
+    .bad { color: #be123c; }
+
+    /* ===== Celebration overlay ===== */
+    .celebration {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .celebration-box {
+      background: white;
+      padding: 32px 26px;
+      border-radius: 18px;
+      text-align: center;
+      box-shadow: 0 16px 40px rgba(0,0,0,.3);
+      max-width: 520px;
+      width: 90%;
+    }
+
+    .celebration-box h2 {
+      font-size: 2.2rem;
+      margin: 12px 0 6px;
+      color: #002f6c;
+    }
+
+    .celebration-box p {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    /* ===== Confetti ===== */
+    .confetti {
+      position: fixed;
+      top: -10px;
+      width: 10px;
+      height: 10px;
+      opacity: 0.9;
+      animation: fall linear forwards;
+      z-index: 10000;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(720deg);
+      }
     }
   </style>
 </head>
 
 <body>
+
   <div class="card">
-    <h1>🧠 Tala’s Math Quiz</h1>
+    <h1>🧠 Tala’s Math Game</h1>
 
     <div class="stats">
       <div class="pill">✅ Correct: <span id="correctCount">0</span> / 5</div>
@@ -108,188 +164,129 @@
     <div class="question" id="question">Loading…</div>
 
     <div class="row">
-      <input id="answer" inputmode="numeric" pattern="[0-9]*" placeholder="Type the answer" />
+      <input id="answer" inputmode="numeric" placeholder="Your answer" />
       <button id="submitBtn">Submit</button>
     </div>
 
     <div class="feedback" id="feedback"></div>
 
-    <div class="row">
+    <div class="row" style="margin-top:14px;">
       <button class="secondary" id="nextBtn">Next question</button>
       <button class="secondary" id="resetBtn">Reset</button>
     </div>
+  </div>
 
-    <div class="footer">
-      Tip: Scan the QR again (or come back to this tab) for a new question.
+  <!-- Celebration overlay -->
+  <div class="celebration" id="celebration">
+    <div class="celebration-box">
+      <div style="font-size:64px;">🎉🥳✨</div>
+      <h2>Well done Tala!</h2>
+      <p>You are so smart ⭐</p>
+      <p style="margin-top:10px;font-size:0.9rem;color:#555;">
+        Sending your result…
+      </p>
     </div>
   </div>
 
-  <script>
-    // ===== Settings =====
-    const PHONE = "004530688081";
-    const SMS_TEXT = "Tala answered 5 questions right";
-    const STORAGE_KEY = "tala_math_quiz_v1";
+<script>
+  const PHONE = "004530688081";
+  const SMS_TEXT = "Tala answered 5 questions right";
 
-    // ===== Elements =====
-    const questionEl = document.getElementById("question");
-    const answerEl = document.getElementById("answer");
-    const submitBtn = document.getElementById("submitBtn");
-    const nextBtn = document.getElementById("nextBtn");
-    const resetBtn = document.getElementById("resetBtn");
-    const feedbackEl = document.getElementById("feedback");
-    const correctCountEl = document.getElementById("correctCount");
-    const streakCountEl = document.getElementById("streakCount");
+  const correctEl = document.getElementById("correctCount");
+  const streakEl = document.getElementById("streakCount");
+  const questionEl = document.getElementById("question");
+  const answerEl = document.getElementById("answer");
+  const feedbackEl = document.getElementById("feedback");
+  const celebrationEl = document.getElementById("celebration");
 
-    let state = loadState();
-    let current = null;
+  let correct = 0;
+  let streak = 0;
+  let currentAnswer = 0;
 
-    function loadState(){
-      try{
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if(!raw) return { correct:0, streak:0, smsOpened:false };
-        return JSON.parse(raw);
-      }catch(e){
-        return { correct:0, streak:0, smsOpened:false };
-      }
-    }
-    function saveState(){
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    }
-    function renderStats(){
-      correctCountEl.textContent = state.correct;
-      streakCountEl.textContent = state.streak;
-    }
+  function rand(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 
-    // ===== Question generation (age 8-friendly) =====
-    function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+  function newQuestion() {
+    const type = Math.random();
+    let a, b;
 
-    // Slightly increases difficulty as correct count grows
-    function generateQuestion(){
-      const level = Math.min(2, Math.floor(state.correct / 2)); // 0..2
-      const roll = Math.random();
-
-      // Level 0: + / - within 20
-      if(level === 0){
-        if(roll < 0.6){
-          const a = randInt(2, 20), b = randInt(1, 20);
-          return { text: `${a} + ${b} = ?`, answer: a + b };
-        } else {
-          const a = randInt(3, 20), b = randInt(1, a);
-          return { text: `${a} − ${b} = ?`, answer: a - b };
-        }
-      }
-
-      // Level 1: add within 100 (not too big), and easy ×
-      if(level === 1){
-        if(roll < 0.55){
-          const a = randInt(10, 60), b = randInt(5, 40);
-          return { text: `${a} + ${b} = ?`, answer: a + b };
-        } else {
-          const base = [2,5,10][randInt(0,2)];
-          const n = randInt(1, 12);
-          return { text: `${base} × ${n} = ?`, answer: base * n };
-        }
-      }
-
-      // Level 2: mix +/-, ×, and missing number
-      if(roll < 0.4){
-        const a = randInt(10, 99), b = randInt(5, 40);
-        return { text: `${a} + ${b} = ?`, answer: a + b };
-      } else if(roll < 0.75){
-        const a = randInt(12, 40), b = randInt(1, 12);
-        return { text: `${a} − ${b} = ?`, answer: a - b };
-      } else if(roll < 0.9){
-        const base = [2,3,4,5,10][randInt(0,4)];
-        const n = randInt(2, 12);
-        return { text: `${base} × ${n} = ?`, answer: base * n };
-      } else {
-        const b = randInt(1, 12);
-        const a = randInt(1, 12);
-        const c = a + b;
-        return { text: `□ + ${b} = ${c}  (What is □?)`, answer: a };
-      }
+    if (type < 0.6) {
+      a = rand(1, 20);
+      b = rand(1, 20);
+      currentAnswer = a + b;
+      questionEl.textContent = `${a} + ${b} = ?`;
+    } else {
+      a = rand(2, 10);
+      b = rand(1, 10);
+      currentAnswer = a * b;
+      questionEl.textContent = `${a} × ${b} = ?`;
     }
 
-    function newQuestion(){
-      current = generateQuestion();
-      questionEl.textContent = current.text;
-      answerEl.value = "";
-      feedbackEl.textContent = "";
-      answerEl.focus();
-    }
+    answerEl.value = "";
+    feedbackEl.textContent = "";
+    answerEl.focus();
+  }
 
-    // ===== Check answer =====
-    function checkAnswer(){
-      if(!current) return;
+  function checkAnswer() {
+    const val = Number(answerEl.value);
 
-      const val = answerEl.value.trim();
-      if(val === ""){
-        feedbackEl.innerHTML = `<span class="bad">Type an answer first 🙂</span>`;
-        return;
-      }
-      const userAns = Number(val);
-      if(!Number.isFinite(userAns)){
-        feedbackEl.innerHTML = `<span class="bad">Numbers only 🙂</span>`;
+    if (val === currentAnswer) {
+      correct++;
+      streak++;
+      feedbackEl.innerHTML = "<span class='good'>Correct ✅</span>";
+      updateStats();
+
+      if (correct === 5) {
+        celebrate();
         return;
       }
 
-      if(userAns === current.answer){
-        state.correct += 1;
-        state.streak += 1;
-        saveState();
-        renderStats();
-        feedbackEl.innerHTML = `<span class="good">Correct! ✅</span>`;
-
-        if(state.correct >= 5 && !state.smsOpened){
-          openSms();
-          return;
-        }
-        setTimeout(newQuestion, 450);
-      }else{
-        state.streak = 0;
-        saveState();
-        renderStats();
-        feedbackEl.innerHTML = `<span class="bad">Not quite — it was ${current.answer} ❌</span>`;
-      }
+      setTimeout(newQuestion, 500);
+    } else {
+      streak = 0;
+      feedbackEl.innerHTML = "<span class='bad'>Try again ❌</span>";
+      updateStats();
     }
+  }
 
-    // ===== Open Messages with prefilled text =====
-    function openSms(){
-      state.smsOpened = true;
-      saveState();
-      renderStats();
+  function updateStats() {
+    correctEl.textContent = correct;
+    streakEl.textContent = streak;
+  }
 
-      // Official Apple doc describes sms:<phone> format (no body). [2](https://developer.apple.com/library/archive/featuredarticles/iPhoneURLScheme_Reference/SMSLinks/SMSLinks.html)
-      // In practice iOS Safari supports a body parameter, often using &body= . [3](https://stackoverflow.com/questions/16165393/ios-sms-scheme-in-html-hyperlink-with-body)
+  function celebrate() {
+    celebrationEl.style.display = "flex";
+    startConfetti();
+
+    setTimeout(() => {
       const body = encodeURIComponent(SMS_TEXT);
-      const smsLink = `sms:${PHONE}&body=${body}`;
+      window.location.href = `sms:${PHONE}&body=${body}`;
+    }, 1800);
+  }
 
-      feedbackEl.innerHTML = `<span class="good">Amazing! 5 correct 🎉 Opening Messages…</span>`;
-      setTimeout(() => { window.location.href = smsLink; }, 700);
+  function startConfetti() {
+    for (let i = 0; i < 120; i++) {
+      const confetti = document.createElement("div");
+      confetti.className = "confetti";
+      confetti.style.left = Math.random() * 100 + "vw";
+      confetti.style.backgroundColor =
+        ["#ff0a54","#ff477e","#ffd166","#06d6a0","#118ab2"][rand(0,4)];
+      confetti.style.animationDuration = rand(3, 6) + "s";
+      document.body.appendChild(confetti);
+
+      setTimeout(() => confetti.remove(), 6000);
     }
+  }
 
-    function resetAll(){
-      state = { correct:0, streak:0, smsOpened:false };
-      saveState();
-      renderStats();
-      newQuestion();
-    }
+  document.getElementById("submitBtn").onclick = checkAnswer;
+  document.getElementById("nextBtn").onclick = newQuestion;
+  document.getElementById("resetBtn").onclick = () => location.reload();
+  answerEl.addEventListener("keydown", e => e.key === "Enter" && checkAnswer());
 
-    // Buttons + Enter key
-    submitBtn.addEventListener("click", checkAnswer);
-    nextBtn.addEventListener("click", newQuestion);
-    resetBtn.addEventListener("click", resetAll);
-    answerEl.addEventListener("keydown", (e) => { if(e.key === "Enter") checkAnswer(); });
+  newQuestion();
+</script>
 
-    // “New question every scan” helper:
-    // When iPad opens/returns to Safari, the page becomes visible again.
-    document.addEventListener("visibilitychange", () => {
-      if(document.visibilityState === "visible") newQuestion();
-    });
-
-    // Start
-    renderStats();
-    newQuestion();
-  </script>
 </body>
 </html>
+``
