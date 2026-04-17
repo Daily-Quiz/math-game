@@ -1,385 +1,291 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>5/5 Quiz + Confetti + Open Messages</title>
+  <meta charset="UTF-8" />
+  <title>Tala’s Math Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <style>
-    :root{
-      --bg:#0b1220; --card:#121a2b; --text:#eaf0ff; --muted:#a7b3d6;
-      --accent:#5eead4; --accent2:#60a5fa; --danger:#fb7185;
-    }
-    body{
-      margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
-      background:radial-gradient(1200px 800px at 20% 10%, #1c2a52 0%, var(--bg) 55%);
-      color:var(--text);
-    }
-    .wrap{ max-width:900px; margin:0 auto; padding:24px; }
-    .card{
-      background:linear-gradient(180deg, rgba(18,26,43,.95), rgba(18,26,43,.75));
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:16px;
-      padding:18px 18px 22px;
-      box-shadow:0 14px 40px rgba(0,0,0,.35);
-    }
-    h1{ margin:0 0 6px; font-size:22px; letter-spacing:.2px; }
-    .sub{ margin:0 0 14px; color:var(--muted); }
-    .row{ display:flex; gap:14px; flex-wrap:wrap; align-items:center; justify-content:space-between; }
-    .pill{
-      background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.08);
-      padding:8px 10px;
-      border-radius:999px;
-      font-size:13px;
-      color:var(--muted);
-    }
-    .qbox{
-      margin-top:14px;
-      padding:14px;
-      border-radius:14px;
-      background:rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.07);
-    }
-    .qtitle{ margin:0 0 10px; font-size:16px; }
-    .answers{ display:grid; gap:10px; }
-    button.answer{
-      width:100%;
-      text-align:left;
-      padding:12px 12px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.03);
-      color:var(--text);
-      cursor:pointer;
-      transition:transform .05s ease, background .2s ease, border .2s ease;
-    }
-    button.answer:hover{ background:rgba(255,255,255,.06); }
-    button.answer:active{ transform:translateY(1px); }
-    .status{ margin-top:12px; min-height:22px; font-size:14px; color:var(--muted); }
-    .status.good{ color:var(--accent); }
-    .status.bad{ color:var(--danger); }
-    .bar{
-      height:10px; border-radius:999px;
-      background:rgba(255,255,255,.08);
-      overflow:hidden; margin-top:12px;
-      border:1px solid rgba(255,255,255,.08);
-    }
-    .bar > div{
-      height:100%; width:0%;
-      background:linear-gradient(90deg,var(--accent),var(--accent2));
-      transition:width .25s ease;
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f3f6fb;
+      margin: 0;
+      padding: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
     }
 
-    /* Celebration overlay */
-    #celebrate{
-      position:fixed; inset:0; display:none; place-items:center;
-      background:rgba(0,0,0,.55);
-      backdrop-filter: blur(4px);
-      z-index:9998;
-    }
-    #celebrate .modal{
-      width:min(560px, 92vw);
-      background:linear-gradient(180deg, rgba(18,26,43,.95), rgba(18,26,43,.85));
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:18px;
-      padding:18px;
-      text-align:center;
-      box-shadow:0 24px 90px rgba(0,0,0,.55);
-      position:relative;
-      z-index:9999;
-    }
-    #celebrate h2{ margin:8px 0 4px; font-size:22px; }
-    #celebrate p{ margin:0 0 14px; color:var(--muted); }
-    .cta{
-      display:flex; gap:10px; justify-content:center; flex-wrap:wrap;
-      margin-top:8px;
-    }
-    a.btn, button.btn{
-      display:inline-flex; align-items:center; justify-content:center; gap:10px;
-      padding:12px 14px; border-radius:12px; text-decoration:none; cursor:pointer;
-      border:1px solid rgba(255,255,255,.12);
-      background:linear-gradient(90deg, rgba(94,234,212,.22), rgba(96,165,250,.22));
-      color:var(--text); font-weight:700;
-      min-width: 210px;
-    }
-    a.btn:hover, button.btn:hover{ filter:brightness(1.05); }
-    button.btn.secondary{
-      background:rgba(255,255,255,.06);
-      min-width: 160px;
-      font-weight:700;
+    .card {
+      background: #fff;
+      padding: 28px;
+      max-width: 720px;
+      width: 100%;
+      border-radius: 14px;
+      box-shadow: 0 8px 22px rgba(0,0,0,.15);
+      text-align: center;
+      position: relative;
+      z-index: 1;
     }
 
-    /* Confetti canvas */
-    #confettiCanvas{
-      position:fixed; inset:0; pointer-events:none;
-      z-index:9997; display:none;
+    h1 {
+      color: #002f6c;
+      margin-top: 0;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      font-weight: 600;
+      color: #444;
+    }
+
+    .pill {
+      background: #f0f4ff;
+      border-radius: 999px;
+      padding: 8px 14px;
+      border: 1px solid #d7e2ff;
+    }
+
+    .question {
+      font-size: 2rem;
+      font-weight: 800;
+      margin: 16px 0;
+    }
+
+    .row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    input {
+      font-size: 1.2rem;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #cdd7f1;
+      width: 220px;
+      text-align: center;
+    }
+
+    button {
+      background: #002f6c;
+      color: #fff;
+      border: none;
+      padding: 12px 18px;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    button.secondary {
+      background: #e9eefc;
+      color: #002f6c;
+      border: 1px solid #cdd7f1;
+    }
+
+    .feedback {
+      margin-top: 14px;
+      min-height: 26px;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .good { color: #0f766e; }
+    .bad { color: #be123c; }
+
+    /* ===== Celebration overlay ===== */
+    .celebration {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .celebration-box {
+      background: white;
+      padding: 32px 26px;
+      border-radius: 18px;
+      text-align: center;
+      box-shadow: 0 16px 40px rgba(0,0,0,.3);
+      max-width: 520px;
+      width: 90%;
+    }
+
+    .celebration-box h2 {
+      font-size: 2.2rem;
+      margin: 12px 0 6px;
+      color: #002f6c;
+    }
+
+    .celebration-box p {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    /* ===== Confetti ===== */
+    .confetti {
+      position: fixed;
+      top: -10px;
+      width: 10px;
+      height: 10px;
+      opacity: 0.9;
+      animation: fall linear forwards;
+      z-index: 10000;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(720deg);
+      }
     }
   </style>
 </head>
 
 <body>
-  <canvas id="confettiCanvas"></canvas>
 
-  <div class="wrap">
-    <div class="card">
-      <div class="row">
-        <div>
-          <h1>Quick Quiz</h1>
-          <p class="sub">Get all 5 correct to unlock the celebration 🎉</p>
-        </div>
-        <div class="pill"><span id="scoreLabel">Score: 0/5</span></div>
-      </div>
+  <div class="card">
+    <h1>🧠 Tala’s Math Game</h1>
 
-      <div class="bar" aria-label="progress">
-        <div id="progressFill"></div>
-      </div>
+    <div class="stats">
+      <div class="pill">✅ Correct: <span id="correctCount">0</span> / 5</div>
+      <div class="pill">⭐ Streak: <span id="streakCount">0</span></div>
+    </div>
 
-      <div class="qbox" id="qbox">
-        <p class="qtitle" id="qtitle">Loading question…</p>
-        <div class="answers" id="answers"></div>
-        <div class="status" id="status"></div>
-      </div>
+    <div class="question" id="question">Loading…</div>
+
+    <div class="row">
+      <input id="answer" inputmode="numeric" placeholder="Your answer" />
+      <button id="submitBtn">Submit</button>
+    </div>
+
+    <div class="feedback" id="feedback"></div>
+
+    <div class="row" style="margin-top:14px;">
+      <button class="secondary" id="nextBtn">Next question</button>
+      <button class="secondary" id="resetBtn">Reset</button>
     </div>
   </div>
 
-  <!-- Celebration -->
-  <div id="celebrate" role="dialog" aria-modal="true" aria-label="Celebration modal">
-    <div class="modal">
-      <div style="font-size:44px; line-height:1;">🎉</div>
-      <h2>You did it — 5/5 correct!</h2>
-      <p>Tap below to open your Messages app with a prefilled text.</p>
-
-      <div class="cta">
-        <a class="btn" id="smsLink" href="#">
-          📩 Open Messages
-        </a>
-        <button class="btn secondary" id="restartBtn" type="button">Restart</button>
-      </div>
-
-      <p style="margin-top:12px; font-size:12px; color:rgba(231,238,255,.65);">
-        Note: Mobile browsers require a tap/click to launch the Messages app.
+  <!-- Celebration overlay -->
+  <div class="celebration" id="celebration">
+    <div class="celebration-box">
+      <div style="font-size:64px;">🎉🥳✨</div>
+      <h2>Well done Tala!</h2>
+      <p>You are so smart ⭐</p>
+      <p style="margin-top:10px;font-size:0.9rem;color:#555;">
+        Sending your result…
       </p>
     </div>
   </div>
 
-  <script>
-    /***********************
-     * 1) QUIZ DATA (EDIT THESE)
-     ***********************/
-    // Replace with your final Expeditors questions + correct options.
-    const questions = [
-      { q: "Question 1: (Replace with your Q1)", options: ["A", "B", "C", "D"], correctIndex: 1 },
-      { q: "Question 2: (Replace with your Q2)", options: ["A", "B", "C", "D"], correctIndex: 0 },
-      { q: "Question 3: (Replace with your Q3)", options: ["A", "B", "C", "D"], correctIndex: 2 },
-      { q: "Question 4: (Replace with your Q4)", options: ["A", "B", "C", "D"], correctIndex: 3 },
-      { q: "Question 5: (Replace with your Q5)", options: ["A", "B", "C", "D"], correctIndex: 1 }
-    ];
+<script>
+  const PHONE = "004530688081";
+  const SMS_TEXT = "Tala answered 5 questions right";
 
-    let idx = 0;
-    let score = 0;
-    let locked = false;
+  const correctEl = document.getElementById("correctCount");
+  const streakEl = document.getElementById("streakCount");
+  const questionEl = document.getElementById("question");
+  const answerEl = document.getElementById("answer");
+  const feedbackEl = document.getElementById("feedback");
+  const celebrationEl = document.getElementById("celebration");
 
-    const qtitle = document.getElementById("qtitle");
-    const answers = document.getElementById("answers");
-    const statusEl = document.getElementById("status");
-    const scoreLabel = document.getElementById("scoreLabel");
-    const progressFill = document.getElementById("progressFill");
+  let correct = 0;
+  let streak = 0;
+  let currentAnswer = 0;
 
-    function renderQuestion(){
-      locked = false;
-      statusEl.textContent = "";
-      statusEl.className = "status";
-      const item = questions[idx];
+  function rand(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 
-      qtitle.textContent = item.q;
-      answers.innerHTML = "";
+  function newQuestion() {
+    const type = Math.random();
+    let a, b;
 
-      item.options.forEach((opt, i) => {
-        const btn = document.createElement("button");
-        btn.className = "answer";
-        btn.type = "button";
-        btn.textContent = opt;
-        btn.addEventListener("click", () => pickAnswer(i));
-        answers.appendChild(btn);
-      });
-
-      updateHUD();
+    if (type < 0.6) {
+      a = rand(1, 20);
+      b = rand(1, 20);
+      currentAnswer = a + b;
+      questionEl.textContent = `${a} + ${b} = ?`;
+    } else {
+      a = rand(2, 10);
+      b = rand(1, 10);
+      currentAnswer = a * b;
+      questionEl.textContent = `${a} × ${b} = ?`;
     }
 
-    function updateHUD(){
-      scoreLabel.textContent = `Score: ${score}/5`;
-      const progress = (idx / questions.length) * 100;
-      progressFill.style.width = progress + "%";
-    }
+    answerEl.value = "";
+    feedbackEl.textContent = "";
+    answerEl.focus();
+  }
 
-    function pickAnswer(i){
-      if(locked) return;
-      locked = true;
+  function checkAnswer() {
+    const val = Number(answerEl.value);
 
-      const item = questions[idx];
-      const isCorrect = i === item.correctIndex;
+    if (val === currentAnswer) {
+      correct++;
+      streak++;
+      feedbackEl.innerHTML = "<span class='good'>Correct ✅</span>";
+      updateStats();
 
-      if(isCorrect){
-        score++;
-        statusEl.textContent = "✅ Correct!";
-        statusEl.classList.add("good");
-      }else{
-        statusEl.textContent = "❌ Not quite — try the next one.";
-        statusEl.classList.add("bad");
+      if (correct === 5) {
+        celebrate();
+        return;
       }
 
-      scoreLabel.textContent = `Score: ${score}/5`;
-
-      setTimeout(() => {
-        idx++;
-        if(idx >= questions.length){
-          progressFill.style.width = "100%";
-          if(score === 5){
-            celebrate();
-          }else{
-            endNotPerfect();
-          }
-        }else{
-          renderQuestion();
-        }
-      }, 650);
+      setTimeout(newQuestion, 500);
+    } else {
+      streak = 0;
+      feedbackEl.innerHTML = "<span class='bad'>Try again ❌</span>";
+      updateStats();
     }
+  }
 
-    function endNotPerfect(){
-      qtitle.textContent = `Finished! You scored ${score}/5.`;
-      answers.innerHTML = "";
-      statusEl.className = "status";
-      statusEl.textContent = "Restart to try again and get 5/5.";
+  function updateStats() {
+    correctEl.textContent = correct;
+    streakEl.textContent = streak;
+  }
 
-      const restart = document.createElement("button");
-      restart.className = "answer";
-      restart.type = "button";
-      restart.textContent = "Restart Quiz";
-      restart.addEventListener("click", resetQuiz);
-      answers.appendChild(restart);
+  function celebrate() {
+    celebrationEl.style.display = "flex";
+    startConfetti();
+
+    setTimeout(() => {
+      const body = encodeURIComponent(SMS_TEXT);
+      window.location.href = `sms:${PHONE}&body=${body}`;
+    }, 1800);
+  }
+
+  function startConfetti() {
+    for (let i = 0; i < 120; i++) {
+      const confetti = document.createElement("div");
+      confetti.className = "confetti";
+      confetti.style.left = Math.random() * 100 + "vw";
+      confetti.style.backgroundColor =
+        ["#ff0a54","#ff477e","#ffd166","#06d6a0","#118ab2"][rand(0,4)];
+      confetti.style.animationDuration = rand(3, 6) + "s";
+      document.body.appendChild(confetti);
+
+      setTimeout(() => confetti.remove(), 6000);
     }
+  }
 
-    function resetQuiz(){
-      idx = 0; score = 0; locked = false;
-      progressFill.style.width = "0%";
-      renderQuestion();
-    }
+  document.getElementById("submitBtn").onclick = checkAnswer;
+  document.getElementById("nextBtn").onclick = newQuestion;
+  document.getElementById("resetBtn").onclick = () => location.reload();
+  answerEl.addEventListener("keydown", e => e.key === "Enter" && checkAnswer());
 
-    /***********************
-     * 2) CONFETTI ANIMATION
-     ***********************/
-    const canvas = document.getElementById("confettiCanvas");
-    const ctx = canvas.getContext("2d");
-    let confetti = [];
-    let animId = null;
-    let endAt = 0;
+  newQuestion();
+</script>
 
-    function resizeCanvas(){
-      canvas.width = window.innerWidth * devicePixelRatio;
-      canvas.height = window.innerHeight * devicePixelRatio;
-      canvas.style.width = window.innerWidth + "px";
-      canvas.style.height = window.innerHeight + "px";
-      ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
-    }
-    window.addEventListener("resize", resizeCanvas);
-    resizeCanvas();
-
-    function makeConfetti(n=180){
-      const colors = ["#5eead4","#60a5fa","#fb7185","#fbbf24","#a78bfa","#34d399"];
-      confetti = Array.from({length:n}, () => ({
-        x: Math.random() * window.innerWidth,
-        y: -20 - Math.random() * window.innerHeight,
-        r: 3 + Math.random() * 5,
-        s: 2 + Math.random() * 6,
-        a: Math.random() * Math.PI * 2,
-        w: 8 + Math.random() * 10,
-        h: 6 + Math.random() * 10,
-        c: colors[Math.floor(Math.random()*colors.length)],
-        spin: (Math.random() * 0.2 + 0.05) * (Math.random() < 0.5 ? -1 : 1),
-        drift: (Math.random() * 2 - 1) * 0.6
-      }));
-    }
-
-    function drawConfetti(){
-      ctx.clearRect(0,0,window.innerWidth, window.innerHeight);
-      confetti.forEach(p => {
-        p.y += p.s;
-        p.x += p.drift;
-        p.a += p.spin;
-
-        ctx.save();
-        ctx.translate(p.x, p.y);
-        ctx.rotate(p.a);
-        ctx.fillStyle = p.c;
-        ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
-        ctx.restore();
-
-        if(p.y > window.innerHeight + 30){
-          p.y = -20;
-          p.x = Math.random() * window.innerWidth;
-        }
-      });
-
-      if(Date.now() < endAt){
-        animId = requestAnimationFrame(drawConfetti);
-      }else{
-        stopConfetti();
-      }
-    }
-
-    function startConfetti(ms=2600){
-      canvas.style.display = "block";
-      makeConfetti(220);
-      endAt = Date.now() + ms;
-      if(animId) cancelAnimationFrame(animId);
-      animId = requestAnimationFrame(drawConfetti);
-    }
-
-    function stopConfetti(){
-      if(animId) cancelAnimationFrame(animId);
-      animId = null;
-      ctx.clearRect(0,0,window.innerWidth, window.innerHeight);
-      canvas.style.display = "none";
-    }
-
-    /***********************
-     * 3) CELEBRATE + OPEN MESSAGES (user click)
-     ***********************/
-    const celebrateEl = document.getElementById("celebrate");
-    const smsLink = document.getElementById("smsLink");
-    const restartBtn = document.getElementById("restartBtn");
-
-    // ✅ Your number set here:
-    const phoneNumber = "+4530688081";
-    const prefilled = "I got 5/5 on the quiz! 🎉";
-    const smsHref = `sms:${encodeURIComponent(phoneNumber)}?body=${encodeURIComponent(prefilled)}`;
-    smsLink.href = smsHref;
-
-    function celebrate(){
-      startConfetti(2800);
-      celebrateEl.style.display = "grid";
-      // We intentionally do NOT auto-open Messages here:
-      // browsers require a user tap on the sms: link/button.
-    }
-
-    restartBtn.addEventListener("click", () => {
-      celebrateEl.style.display = "none";
-      stopConfetti();
-      resetQuiz();
-    });
-
-    celebrateEl.addEventListener("click", (e) => {
-      if(e.target === celebrateEl){
-        celebrateEl.style.display = "none";
-        stopConfetti();
-      }
-    });
-
-    /***********************
-     * START
-     ***********************/
-    renderQuestion();
-  </script>
 </body>
 </html>
